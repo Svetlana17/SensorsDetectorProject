@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".GyroscopeActivity" />
-        <activity android:name=".AccelerGyrosActivity"></activity>
+        <activity android:name=".AccelerGyrosActivity" />
     </application>
 
 </manifest>

@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (id) {
             case R.id.line_gyroscope:
                 state = "gyroscope";
+               // Intent intent = new Intent(MainActivity.this,GyroscopeActivity.class);
                 Intent intent = new Intent(MainActivity.this,GyroscopeActivity.class);
                 startActivity(intent);
                 return true;

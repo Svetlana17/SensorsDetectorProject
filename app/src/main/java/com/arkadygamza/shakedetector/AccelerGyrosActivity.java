@@ -60,7 +60,7 @@ public class AccelerGyrosActivity extends AppCompatActivity implements View.OnCl
         increaseValue.put("Y", 0.0);
         increaseValue.put("Z", 0.0);
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        Spinner spinner = (Spinner) findViewById(R.id.spinners);
         ArrayAdapter<?> adapter =
                 ArrayAdapter.createFromResource(this, R.array.list, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -201,10 +201,10 @@ public class AccelerGyrosActivity extends AppCompatActivity implements View.OnCl
 
     private void setupPlotters() {
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        List<Sensor> linearAccSensors = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
+        List<Sensor> linearAccSensors = sensorManager.getSensorList(Sensor.TYPE_LINEAR_ACCELERATION);
         List<Sensor> gyroscopeAccSensors = sensorManager.getSensorList(Sensor.TYPE_GYROSCOPE);
-        mPlotters.add(new SensorPlotterPrint("LIN", (GraphView) findViewById(R.id.graph_accelerometr_both), SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, this,5));
-        mPlotters.add(new SensorPlotterPrint("GER", (GraphView) findViewById(R.id.graph_gyroscope_both), SensorEventObservableFactory.createSensorEventObservable(gyroscopeAccSensors.get(0), sensorManager), state, increaseValue, this,5));
+        mPlotters.add(new SensorPlotterPrint("LIN", (GraphView) findViewById(R.id.graph_accelerometr), SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, this,5));
+        mPlotters.add(new SensorPlotterPrint("GER", (GraphView) findViewById(R.id.graph_gyroscopes), SensorEventObservableFactory.createSensorEventObservable(gyroscopeAccSensors.get(0), sensorManager), state, increaseValue, this,5));
     }
 
     @Override
@@ -249,7 +249,7 @@ public class AccelerGyrosActivity extends AppCompatActivity implements View.OnCl
     public void printValueInText(SensorEvent event) {
         int type = event.sensor.getType();
         switch (type) {
-            case Sensor.TYPE_ACCELEROMETER:
+            case Sensor.TYPE_LINEAR_ACCELERATION:
                 linX.setText("X: " + String.format("%.2f", event.values[0]));
                 linY.setText("Y: " + String.format("%.2f", event.values[1]));
                 linZ.setText("Z: " + String.format("%.2f", event.values[2]));
