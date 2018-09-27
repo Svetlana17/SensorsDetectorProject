@@ -171,7 +171,8 @@ public class SensorPlotter {
     }
 
     private void appendData(LineGraphSeries<DataPoint> series, double value) {
-        series.appendData(new DataPoint(getX(), value), true, MAX_DATA_POINTS);
+       // series.appendData(new DataPoint(getX(0), value), true, MAX_DATA_POINTS);
+        series.appendData(new DataPoint(getX(),value), true, MAX_DATA_POINTS);
     }
 
     public void setState(String s) {
@@ -180,6 +181,12 @@ public class SensorPlotter {
 
     public void setIncValue(Map<String, Double> v) {
         this.incValue = v;
+    }
+
+
+    public void changeViewPort(int v) {
+        this.VIEWPORT_SECONDS = v;
+        System.out.println(VIEWPORT_SECONDS);
     }
 
     private long getX() {

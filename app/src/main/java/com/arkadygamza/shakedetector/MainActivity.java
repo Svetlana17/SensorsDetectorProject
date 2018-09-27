@@ -32,15 +32,19 @@ import rx.functions.Action1;
 import rx.functions.Func2;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
+//Это прислал ОН
     private final List<SensorPlotter> mPlotters = new ArrayList<>(3);
 
     private Observable<?> mShakeObservable;
     private Subscription mShakeSubscription;
     public String state = "DEFAULT";
     public Map<String, Double> increaseValue;
-    EditText editValue;
+   EditText editValue;
     public int VIEWPORT_SECONDS;
+///SeekBar seekBar;
+      EditText shagValue;
+    Button button;
+    SensorPlotter sensorPlotter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,24 +66,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ArrayAdapter.createFromResource(this, R.array.list, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        shagValue = (EditText) findViewById(R.id.value_shag);
 
-        SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+        button = (Button) findViewById(R.id.shag);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+            public void onClick(View view) {
+
+                int i = Integer.parseInt(shagValue.getText().toString());
+                sensorPlotter.changeViewPort(i);
                 VIEWPORT_SECONDS = i;
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                restartActivity(MainActivity.this);
+                restartActivity(MainActivity.this,i);
             }
         });
+
+
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -160,6 +162,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(VIEWPORT_SECONDS>0){
+            outState.putSerializable("VIEWPORT_SECONDS", VIEWPORT_SECONDS);
+        }
+    }
     public void updateIncValue(String line, String value) {
         increaseValue.put(line, Double.valueOf(value));
         changeIncValue(increaseValue);
@@ -171,64 +180,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
-    public void restartActivity(Activity activity) {
-        if (Build.VERSION.SDK_INT >= 11) {
-            activity.recreate();
-        } else {
-            activity.finish();
-            activity.startActivity(activity.getIntent());
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (VIEWPORT_SECONDS > 0) {
-            outState.putSerializable("VIEWPORT_SECONDS", VIEWPORT_SECONDS);
-        }
-
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
             case R.id.line_gyroscope:
                 state = "gyroscope";
-                Intent intent = new Intent(MainActivity.this, GyroscopeActivity.class);
+                Intent intent = new Intent(MainActivity.this,GyroscopeActivity.class);
                 startActivity(intent);
                 return true;
-
             case R.id.line_accelerometr:
                 state = "accelerometr";
                 return true;
-
             case R.id.line_accelerometr_geroscope:
-                Intent i = new Intent(MainActivity.this, AccelerGyrosActivity.class);
+                Intent i = new Intent(MainActivity.this,AccelerGyrosActivity.class);
                 startActivity(i);
                 return true;
-
             default:
                 return true;
         }
     }
-
     public void changeState(String state) {
         mPlotters.get(0).setState(state);
     }
-
     public void changeIncValue(Map<String, Double> value) {
         mPlotters.get(0).setIncValue(value);
-
     }
-
     private void setupPlotters() {
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> linearAccSensors = sensorManager.getSensorList(Sensor.TYPE_LINEAR_ACCELERATION);
-        mPlotters.add(new SensorPlotter("LIN", (GraphView) findViewById(R.id.graph_accelerometr), SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, VIEWPORT_SECONDS));
+        sensorPlotter=(new SensorPlotter("LIN", (GraphView) findViewById(R.id.graph_accelerometr), SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, VIEWPORT_SECONDS));
+        mPlotters.add(sensorPlotter);
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -242,7 +225,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Observable.from(mPlotters).subscribe(SensorPlotter::onPause);
         mShakeSubscription.unsubscribe();
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -267,4 +249,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+    public static void restartActivity(Activity activity, int i) {
+        if (Build.VERSION.SDK_INT >= 11) {
+            activity.recreate();
+        } else {
+            activity.finish();
+            activity.startActivity(activity.getIntent());
+        }
+    }
 }
+
+
+
+
+

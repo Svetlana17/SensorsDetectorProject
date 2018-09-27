@@ -9,32 +9,49 @@
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:entries="@array/list" />
 
-        <com.jjoe64.graphview.GraphView
-            android:id="@+id/graph_accelerometr"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@android:color/darker_gray" />
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph_accelerometr"
+        android:layout_width="match_parent"
+        android:layout_height="349dp"
+        android:layout_weight="1"
+        android:background="@android:color/darker_gray" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="45dp">
+        android:layout_height="50dp"
+        android:orientation="horizontal">
 
 
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/value_shag"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+
+            android:layout_marginEnd="134dp"
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:id="@+id/shag"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:progress="5"
-            android:max="20" />
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentTop="false"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="10dp"
+            android:onClick="onClick"
+            android:paddingLeft="0dp"
+            android:text="Применить" />
+    </LinearLayout>
 
-    </RelativeLayout>
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="45dp">
+
 
         <EditText
             android:id="@+id/value_edit"
@@ -82,9 +99,5 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/btn_all"
             android:text="cancel" />
-
-
     </RelativeLayout>
-
-
 </LinearLayout>
