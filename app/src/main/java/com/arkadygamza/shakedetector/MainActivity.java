@@ -208,7 +208,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void setupPlotters() {
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        List<Sensor> linearAccSensors = sensorManager.getSensorList(Sensor.TYPE_LINEAR_ACCELERATION);
+       // List<Sensor> linearAccSensors = sensorManager.getSensorList(Sensor.TYPE_LINEAR_ACCELERATION);
+        List<Sensor> linearAccSensors = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
         sensorPlotter=(new SensorPlotter("LIN", (GraphView) findViewById(R.id.graph_accelerometr), SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, VIEWPORT_SECONDS));
         mPlotters.add(sensorPlotter);
     }
