@@ -38,17 +38,17 @@ public class SensorPlotterPrint {
     private Subscription mSubscription;
     private String state;
     private Map<String, Double> incValue;
-    private AccelerGyrosActivity activity;
+
     GraphView graphView;
 
     public SensorPlotterPrint(@NonNull String name, @NonNull GraphView graphViewOutside,
                               @NonNull Observable<SensorEvent> sensorEventObservable, String state, Map<String, Double> incValue,
-                              AccelerGyrosActivity view, int v) {
+                              int v) {
         this.incValue = incValue;
         this.state = state;
         mName = name;
         mSensorEventObservable = sensorEventObservable;
-        this.activity = view;
+
         this.VIEWPORT_SECONDS = v;
         MAX_DATA_POINTS = VIEWPORT_SECONDS * 10;
 
@@ -104,17 +104,17 @@ public class SensorPlotterPrint {
             case "X":
                 appendData(mSeriesXs, event.values[0]);
                 appendData(mSeriesXf, event.values[0] + incValue.get("X"));
-                activity.printValueInText(event);
+
                 break;
             case "Y":
                 appendData(mSeriesYs, event.values[1]);
                 appendData(mSeriesYf, event.values[1] + incValue.get("Y"));
-                activity.printValueInText(event);
+
                 break;
             case "Z":
                 appendData(mSeriesZs, event.values[2]);
                 appendData(mSeriesZf, event.values[2] + incValue.get("Z"));
-                activity.printValueInText(event);
+
                 break;
             case "DEFAULT":
                 appendData(mSeriesXs, event.values[0]);
@@ -123,7 +123,7 @@ public class SensorPlotterPrint {
                 appendData(mSeriesYf, event.values[1] + incValue.get("Y"));
                 appendData(mSeriesZs, event.values[2]);
                 appendData(mSeriesZf, event.values[2] + incValue.get("Z"));
-                activity.printValueInText(event);
+
                 break;
         }
     }
